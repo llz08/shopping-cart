@@ -1,4 +1,8 @@
 # shopping_cart.py
+import datetime
+
+
+
 
 products = [
     {"id":1, "name": "Chocolate Sandwich Cookies", "department": "snacks", "aisle": "cookies cakes", "price": 3.50},
@@ -25,6 +29,9 @@ products = [
 
 
 # Capture input
+now = datetime.datetime.now()
+total_price = 0
+selected_ids = []
 
 while True:
     selected_id = input("Please input a product identifier: ") 
@@ -32,7 +39,36 @@ while True:
     if selected_id == "DONE":
         break
     else:
-        matching_products = [p for p in products if str(p["id"] )== str(selected_id)]
-        matching_product = matching_products[0]
-        print("SELECTED PRODUCT: " + matching_product["name"] + " " + str(matching_product["price"]))
+        selected_ids.append(selected_id)
+        
 
+# INFO DISPLAY / OUTPUT
+# Welcome Message
+print("---------------------------------")
+print("MY GROCERY STORE")
+print("WWW.MY-GROCERY-STORE.COM")
+print("---------------------------------")
+print("CHECKOUT AT: " + (now.strftime("%Y-%m-%d %I:%M %p")))
+
+# Formatting to USD Dollar
+print("---------------------------------")
+print("SELECTED PRODUCT: ")
+
+def to_usd(my_price):
+    return f"${my_price:,.2f}" 
+
+for selected_id in selected_ids :
+    matching_products = [p for p in products if str(p["id"] )== str(selected_id)]
+    matching_product = matching_products[0]
+    total_price = total_price + matching_product["price"]
+    print("..." + matching_product["name"] + "(" + to_usd(matching_product["price"]) + ")")
+
+print("---------------------------------")
+print("SUBTOTAL: " + to_usd(total_price))
+tax = float(total_price) * 0.0875
+print("TAX: " + to_usd(tax))
+final_price = to_usd(float(total_price) + float(tax))
+print("TOTAL: " + final_price)
+print("---------------------------------")
+print("THANKS, SEE YOU AGAIN SOON!")
+print("---------------------------------")
